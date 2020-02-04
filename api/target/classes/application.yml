@@ -1,0 +1,43 @@
+################
+# Tomcat 配置
+################
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: utf-8
+  max-http-header-size: 80KB
+
+################
+# 数据源配置
+################
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource # 数据源类型 HikariCP
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/food?characterEncoding=UTF-8&useSSL=false&useUnicode=true&serverTimezone=UTC
+    username: root
+    password: 123456
+    hikari:
+      connection-timeout: 30000 # 等待连接池分配连接的最大时长（毫秒），超过这个时间还没有可用连接则发生 SQLException，默认 30 秒
+      minimum-idle: 5 # 最小连接数，测试 5，线上 10，或者和最大连接数相等
+      maximum-pool-size: 20 # 最大连接数，4核 10，8核 20
+      auto-commit: true # 自动提交
+      idle-timeout: 600000 # 连接超时时长（毫秒），超时则被释放（retired），默认 10 分钟
+      pool-name: DateSourceHikariCP # 连接池名字
+      max-lifetime: 1800000 # 连接的最大时间（毫秒），超时且没被使用则释放（retired），默认 30 分钟
+      connection-test-query: SELECT 1 # 测试代码
+
+################
+# mybatis 配置
+################
+mybatis:
+  type-aliases-package: com.food.pojo # 所有 pojo 类所在的包路径
+  mapper-locations: classpath:mapper/*.xml # mapper 映射文件
+
+################
+# mapper 配置
+################
+mapper:
+  mappers: com.food.my.MyMapper # 通用 mapper
+  not-empty: false # 不让 mapper 自动添加 xxx != ""
+  identity: MYSQL # 数据库方言
